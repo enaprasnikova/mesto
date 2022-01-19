@@ -1,0 +1,7 @@
+.element__line-like {
+  display: flex;
+  justify-content: space-between;
+  max-width: 246px;
+  margin: 25px 15px 31px 21px;
+  height: 29px;
+}
