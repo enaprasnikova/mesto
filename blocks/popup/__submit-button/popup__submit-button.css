@@ -4,7 +4,7 @@
   border: none;
   background: #000000;
   border-radius: 2px;
-  font-family: Inter;
+  font-family: Inter, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -12,7 +12,7 @@
   text-align: center;
   color: #FFFFFF;
   cursor: pointer;
-  margin: 18px 0 0;
+  margin: 18px 0 29px;
 }
 
 .popup__submit-button:hover {
