@@ -9,7 +9,7 @@
   cursor: pointer;
   position: absolute;
   top: -38px;
-  left: 435px;
+  right: -35px;
 }
 
 .popup__close-button:hover {
@@ -19,6 +19,6 @@
 @media screen and (max-width: 981px) {
   .popup__close-button {
     top: -36px;
-    left: 262px;
+    right: 0;
   }
 }

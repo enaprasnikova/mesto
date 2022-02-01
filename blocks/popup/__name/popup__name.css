@@ -1,4 +1,4 @@
-.popup__edit-profile {
+.popup__name {
   font-family: Inter, Arial, sans-serif;
   font-style: normal;
   font-weight: 900;
@@ -9,7 +9,7 @@
 }
 
 @media screen and (max-width: 981px) {
-  .popup__edit-profile {
+  .popup__name {
     font-size: 18px;
     line-height: 22px;
     margin: 25px 22px 75px;
