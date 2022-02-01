@@ -106,8 +106,8 @@ function openPopUpImage(evt) {
   let popUp = document.querySelector('.popup_type_image');
   popUp.classList.add('popup_opened'); 
   let element = evt.target.closest('.element');
-  popUp.querySelector('.popup_card_img').setAttribute('src', element.querySelector('.element__photo').getAttribute('src'))
-  popUp.querySelector('.popup_card_name').textContent = element.querySelector('.element__photo-name').textContent;
+  popUp.querySelector('.popup__card_img').setAttribute('src', element.querySelector('.element__photo').getAttribute('src'))
+  popUp.querySelector('.popup__card_name').textContent = element.querySelector('.element__photo-name').textContent;
 }
 
 
