@@ -41,8 +41,8 @@ function submitInfo(evt) {
 //открыть попап с редактированием профиля
 function openPopUpProfile() {
   openPopUp(popUpProfile);
-  let profileName = profileNameElement.textContent;
-  let profileAboutMe = profileAboutMeElement.textContent;
+  const profileName = profileNameElement.textContent;
+  const profileAboutMe = profileAboutMeElement.textContent;
   inputNameElement.value = profileName;
   inputAboutMeElement.value = profileAboutMe; 
 }
@@ -58,27 +58,27 @@ function openPopUp(popup) {
 //открыть попап с фотографией 
 function openPopUpImage(evt) {
   openPopUp(popUpImage);
-  let element = evt.target.closest('.element');
+  const element = evt.target.closest('.element');
   popUpImage.querySelector('.popup__card_img').setAttribute('src', element.querySelector('.element__photo').getAttribute('src'))
   popUpImage.querySelector('.popup__card_name').textContent = element.querySelector('.element__photo-name').textContent;
 }
 
 initialCards.forEach(function(item) {
-  let templateClone = changeInitialCard(item);
+  const templateClone = changeInitialCard(item);
   elementList.append(templateClone); //добавить в конец родильского блока
 })
 
 function addCard(evt) {
   evt.preventDefault();
-  let inputCardTitle = document.querySelector('.popup__input-text_new_title');
-  let inputCardLink = document.querySelector('.popup__input-text_new_link');
-  let templateClone = changeInitialCard({name: inputCardTitle.value, link: inputCardLink.value});
+  const inputCardTitle = document.querySelector('.popup__input-text_new_title');
+  const inputCardLink = document.querySelector('.popup__input-text_new_link');
+  const templateClone = changeInitialCard({name: inputCardTitle.value, link: inputCardLink.value});
   elementList.prepend(templateClone); //добавить в начало родильского блока 
   closePopUp(popUpCard);
 }
 
 function changeInitialCard(item) {
-    let templateClone = templateCardsContent.cloneNode(true); //скопировать содержимое 
+    const templateClone = templateCardsContent.cloneNode(true); //скопировать содержимое 
     templateClone.querySelector('.element__photo').setAttribute('src', item.link); //добавить картинки
     templateClone.querySelector('.element__photo-name').textContent = item.name; //добавить подпись к фото
     templateClone.querySelector('.element__photo').addEventListener('click', openPopUpImage); //открыть попап
