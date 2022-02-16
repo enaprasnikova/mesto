@@ -37,39 +37,54 @@
 		</footer>
 	</div>
 	<section class="popup popup_type_profile">
-		<div class="popup__container">
+		<div class="popup__container container">
 			<button type='button' class="popup__close-button popup__close-button_profile">
 				<img src="./images/closeIcon.svg" class="popup__close-image" alt="крестик">
 			</button>
 			<h2 class="popup__name">Редактировать профиль</h2>
-			<form name="popupForm" class="popup__input popup__input_profile">
-				<input type="text" name="name" class="popup__input-text popup__input-text_new_name">
-				<input type="text" name="aboutMe" class="popup__input-text popup__input-text_new_info">
+			<form name="popupForm" class="popup__input popup__input_profile" novalidate>
+				<div class="input-box">
+					<input id="name_input" type="text" name="name" class="popup__input-text popup__input-text_new_name"
+						minlength="2" maxlength="40" required>
+					<span class="name_input-error input-box__error"></span>
+				</div>
+				<div class="input-box">
+					<input id="info_input" type="text" name="aboutMe" class="popup__input-text popup__input-text_new_info"
+						minlength="2" maxlength="200" required>
+					<span class="info_input-error input-box__error"></span>
+				</div>
 				<button type="submit" class="popup__submit-button">Сохранить</button>
 			</form>
 		</div>
 	</section>
 	<section class="popup popup_type_card">
-		<div class="popup__container">
+		<div class="popup__container container">
 			<button type='button' class="popup__close-button popup__close-button_card">
 				<img src="./images/closeIcon.svg" class="popup__close-image" alt="крестик">
 			</button>
 			<h2 class="popup__name">Новое место</h2>
-			<form name="popupForm" class="popup__input popup__input_card">
-				<input type="text" name="name" placeholder="Название" class="popup__input-text popup__input-text_new_title">
-				<input type="text" name="aboutMe" placeholder="Ссылка на картинку"
-					class="popup__input-text popup__input-text_new_link">
-				<button type="submit" class="popup__submit-button">Создать</button>
+			<form name="popupForm" class="popup__input popup__input_card" novalidate>
+				<div class="input-box">
+					<input id="title_input" type="text" name="name" placeholder="Название"
+						class="popup__input-text popup__input-text_new_title" minlength="2" maxlength="20" required>
+					<span class="title_input-error input-box__error"></span>
+				</div>
+				<div class="input-box">
+					<input id="link_input" type="url" name="aboutMe" placeholder="Ссылка на картинку"
+						class="popup__input-text popup__input-text_new_link" required>
+					<span class="link_input-error input-box__error"></span>
+				</div>
+				<button type="submit" class="popup__submit-button popup__submit-button_inactive" disabled>Создать</button>
 			</form>
 		</div>
 	</section>
 	<section class="popup popup_type_image">
-		<div class="popup__container-img">
+		<div class="popup__container-img container">
 			<button type='button' class="popup__close-button popup__close-button_image">
 				<img src="./images/closeIcon.svg" class="popup__close-image" alt="крестик">
 			</button>
 			<img src=" " class="popup__card popup__card_img">
-			<h2 class="popup__card popup__card_name" ></h2>
+			<h2 class="popup__card popup__card_name"></h2>
 		</div>
 	</section>
 	<template class="template">
@@ -87,5 +102,7 @@
 	</template>
 	<script src="./scripts/cards.js"></script>
 	<script src="./scripts/index.js"></script>
+	<script src="./scripts/validate.js"></script>
 </body>
+
 </html>

@@ -30,6 +30,7 @@ const popUpCard = document.querySelector('.popup_type_card');
 
 const popUpImage = document.querySelector('.popup_type_image');
 
+
 //добавить новую информацию в профиль
 function submitInfo(evt) {
   evt.preventDefault();
@@ -49,6 +50,7 @@ function openPopUpProfile() {
 
 function closePopUp(popup) {
   popup.classList.remove('popup_opened')
+
 }
 
 function openPopUp(popup) {
