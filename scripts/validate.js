@@ -4,7 +4,6 @@ enableValidation({
   submitButtonSelector:'.popup__submit-button',
   inactiveButtonClass: 'popup__submit-button_inactive',
   inputErrorClass: 'popup__input-text_error',
-  openPopUpClass: '.popup_opened',
   popupSelector: '.popup'
 }); 
 
@@ -17,8 +16,6 @@ function enableValidation(param) {
       checkFormValidity(form, param);
     })
   })
-  closePopupOverlay(param)
-  addEventOnEscape(param)
 }
 
 function checkInputValidity(input, param) {
@@ -41,24 +38,4 @@ function checkFormValidity(form, param) {
     button.classList.remove(param.inactiveButtonClass);
     button.removeAttribute('disabled')
   }
-}
-
-function addEventOnEscape(param) {
-  document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') {
-     const popup = document.querySelector(param.openPopUpClass)
-     closePopUp(popup)
-    }
-  })
-}
-
-function closePopupOverlay(param) {
-  const closeOverlay = document.querySelectorAll(param.popupSelector)
-  closeOverlay.forEach(overlay => {
-    overlay.addEventListener('mousedown', function (event) {
-      if (!event.target.closest('.container')) {
-       closePopUp(overlay)
-      }
-    });
-  })
 }

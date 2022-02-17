@@ -1,12 +1,14 @@
+const ESC_CODE = 'Escape';
+
 const elementList = document.querySelector('.element-list');
 
 const templateCardsContent = document.querySelector('.template').content;
 
 const editButton = document.querySelector('.profile__edit-button');
 
-const closeButton = document.querySelector('.popup__close-button_profile');
+const closeButtonProfile = document.querySelector('.popup__close-button_profile');
 
-const popUpForm = document.querySelector('.popup__input_profile');
+const popUpFormProfile = document.querySelector('.popup__input_profile');
 
 const addButton = document.querySelector('.profile__add-button');
 
@@ -50,19 +52,29 @@ function openPopUpProfile() {
 
 function closePopUp(popup) {
   popup.classList.remove('popup_opened')
-
+  document.removeEventListener('keydown',  closeByEsc)
 }
 
 function openPopUp(popup) {
-  popup.classList.add('popup_opened')
+  popup.classList.add('popup_opened');
+  document.addEventListener('keydown',  closeByEsc)
 }
+
+function closeByEsc(evt) {
+  if (evt.key === ESC_CODE) {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopUp(openedPopup); 
+  }
+} 
 
 //открыть попап с фотографией 
 function openPopUpImage(evt) {
   openPopUp(popUpImage);
   const element = evt.target.closest('.element');
   popUpImage.querySelector('.popup__card_img').setAttribute('src', element.querySelector('.element__photo').getAttribute('src'))
+  popUpImage.querySelector('.popup__card_img').setAttribute('alt', element.querySelector('.element__photo-name').textContent)
   popUpImage.querySelector('.popup__card_name').textContent = element.querySelector('.element__photo-name').textContent;
+  
 }
 
 initialCards.forEach(function(item) {
@@ -77,11 +89,17 @@ function addCard(evt) {
   const templateClone = changeInitialCard({name: inputCardTitle.value, link: inputCardLink.value});
   elementList.prepend(templateClone); //добавить в начало родильского блока 
   closePopUp(popUpCard);
+  inputCardTitle.value = '';
+  inputCardLink.value = '';
+  const addImageButton = evt.target.querySelector('.popup__submit-button');
+  addImageButton.classList.add('popup__submit-button_inactive');
+  addImageButton.setAttribute('disabled', true);
 }
 
 function changeInitialCard(item) {
     const templateClone = templateCardsContent.cloneNode(true); //скопировать содержимое 
     templateClone.querySelector('.element__photo').setAttribute('src', item.link); //добавить картинки
+    templateClone.querySelector('.element__photo').setAttribute('alt', item.name);
     templateClone.querySelector('.element__photo-name').textContent = item.name; //добавить подпись к фото
     templateClone.querySelector('.element__photo').addEventListener('click', openPopUpImage); //открыть попап
     templateClone.querySelector('.element__like-button').addEventListener('click', setLikeImage);  //поставить лайки
@@ -99,11 +117,24 @@ function deleteCard(evt) {
   evt.target.closest('.element').remove();
 }
 
+function closePopupOverlay() {
+  const closeOverlay = document.querySelectorAll('.popup')
+  closeOverlay.forEach(overlay => {
+    overlay.addEventListener('mousedown', function (event) {
+      if (!event.target.closest('.container')) {
+       closePopUp(overlay)
+      }
+    });
+  })
+}
+
+closePopupOverlay()
+
 editButton.addEventListener('click', openPopUpProfile);
 
-closeButton.addEventListener('click', function(){closePopUp(popUpProfile)});
+closeButtonProfile.addEventListener('click', function(){closePopUp(popUpProfile)});
 
-popUpForm.addEventListener('submit', submitInfo);
+popUpFormProfile.addEventListener('submit', submitInfo);
 
 addButton.addEventListener('click', function(){openPopUp(popUpCard)});
 
