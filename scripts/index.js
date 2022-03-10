@@ -1,8 +1,9 @@
-const ESC_CODE = 'Escape';
+import {openPopUp, closePopUp} from './utils.js';
+import {popUpImage, initialCards} from './constans.js';
+import { Card } from './Card.js';
+import { FormValidator } from './FormValidator.js';
 
 const elementList = document.querySelector('.element-list');
-
-const templateCardsContent = document.querySelector('.template').content;
 
 const editButton = document.querySelector('.profile__edit-button');
 
@@ -30,8 +31,19 @@ const popUpProfile = document.querySelector('.popup_type_profile');
 
 const popUpCard = document.querySelector('.popup_type_card');
 
-const popUpImage = document.querySelector('.popup_type_image');
+const settings = {
+  formSelector: '.popup__input',
+  inputSelector: '.popup__input-text',
+  submitButtonSelector:'.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_inactive',
+  inputErrorClass: 'popup__input-text_error',
+  popupSelector: '.popup'
+};
 
+const validatorFormAdd = new FormValidator(settings, popUpFormAdd);
+const validatorFormEdit = new FormValidator(settings, popUpFormProfile);
+validatorFormAdd.enableValidation();
+validatorFormEdit.enableValidation();
 
 //добавить новую информацию в профиль
 function submitInfo(evt) {
@@ -50,35 +62,9 @@ function openPopUpProfile() {
   inputAboutMeElement.value = profileAboutMe; 
 }
 
-function closePopUp(popup) {
-  popup.classList.remove('popup_opened')
-  document.removeEventListener('keydown',  closeByEsc)
-}
-
-function openPopUp(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown',  closeByEsc)
-}
-
-function closeByEsc(evt) {
-  if (evt.key === ESC_CODE) {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopUp(openedPopup); 
-  }
-} 
-
-//открыть попап с фотографией 
-function openPopUpImage(evt) {
-  openPopUp(popUpImage);
-  const element = evt.target.closest('.element');
-  popUpImage.querySelector('.popup__card_img').setAttribute('src', element.querySelector('.element__photo').getAttribute('src'))
-  popUpImage.querySelector('.popup__card_img').setAttribute('alt', element.querySelector('.element__photo-name').textContent)
-  popUpImage.querySelector('.popup__card_name').textContent = element.querySelector('.element__photo-name').textContent;
-  
-}
-
-initialCards.forEach(function(item) {
-  const templateClone = changeInitialCard(item);
+initialCards.forEach(function(data) {
+  const card = new Card(data, '.template');
+  const templateClone = card.changeInitialCard();
   elementList.append(templateClone); //добавить в конец родильского блока
 })
 
@@ -86,7 +72,8 @@ function addCard(evt) {
   evt.preventDefault();
   const inputCardTitle = document.querySelector('.popup__input-text_new_title');
   const inputCardLink = document.querySelector('.popup__input-text_new_link');
-  const templateClone = changeInitialCard({name: inputCardTitle.value, link: inputCardLink.value});
+  const card = new Card({name: inputCardTitle.value, link: inputCardLink.value}, '.template');
+  const templateClone = card.changeInitialCard();
   elementList.prepend(templateClone); //добавить в начало родильского блока 
   closePopUp(popUpCard);
   inputCardTitle.value = '';
@@ -94,27 +81,6 @@ function addCard(evt) {
   const addImageButton = evt.target.querySelector('.popup__submit-button');
   addImageButton.classList.add('popup__submit-button_inactive');
   addImageButton.setAttribute('disabled', true);
-}
-
-function changeInitialCard(item) {
-    const templateClone = templateCardsContent.cloneNode(true); //скопировать содержимое 
-    templateClone.querySelector('.element__photo').setAttribute('src', item.link); //добавить картинки
-    templateClone.querySelector('.element__photo').setAttribute('alt', item.name);
-    templateClone.querySelector('.element__photo-name').textContent = item.name; //добавить подпись к фото
-    templateClone.querySelector('.element__photo').addEventListener('click', openPopUpImage); //открыть попап
-    templateClone.querySelector('.element__like-button').addEventListener('click', setLikeImage);  //поставить лайки
-    templateClone.querySelector('.element__delete-button').addEventListener('click', deleteCard); //удалить карточку
-    return templateClone;
-}
-
-// добавить слушатель для лайка
-function setLikeImage(evt) {
-  evt.target.classList.toggle('element__like-button_active');
-}
-
-//удалить карточку
-function deleteCard(evt) {
-  evt.target.closest('.element').remove();
 }
 
 function closePopupOverlay() {
