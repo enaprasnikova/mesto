@@ -59,7 +59,10 @@ function openPopUpProfile() {
   const profileName = profileNameElement.textContent;
   const profileAboutMe = profileAboutMeElement.textContent;
   inputNameElement.value = profileName;
-  inputAboutMeElement.value = profileAboutMe; 
+  inputAboutMeElement.value = profileAboutMe;
+  const submitButton = popUpProfile.querySelector(settings.submitButtonSelector)
+  submitButton.removeAttribute('disabled');
+  submitButton.classList.remove(settings.inactiveButtonClass);
 }
 
 initialCards.forEach(function(data) {
@@ -76,11 +79,8 @@ function addCard(evt) {
   const templateClone = card.changeInitialCard();
   elementList.prepend(templateClone); //добавить в начало родильского блока 
   closePopUp(popUpCard);
-  inputCardTitle.value = '';
-  inputCardLink.value = '';
-  const addImageButton = evt.target.querySelector('.popup__submit-button');
-  addImageButton.classList.add('popup__submit-button_inactive');
-  addImageButton.setAttribute('disabled', true);
+  popUpFormAdd.reset(); //очистить поля формы 
+  validatorFormAdd.disableButton();
 }
 
 function closePopupOverlay() {

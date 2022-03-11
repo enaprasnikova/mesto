@@ -5,7 +5,16 @@ export class Card {
   constructor(data, cardTemplateSelector) {
     this._name = data.name;
     this._link = data.link;
-    this._templateCardsContent = document.querySelector(cardTemplateSelector).content;
+    this._cardTemplateSelector = cardTemplateSelector;
+    // this._templateCardsContent = document.querySelector(cardTemplateSelector).content;
+  }
+
+  _getTemplate() {
+    const templateClone = document
+    .querySelector(this._cardTemplateSelector)
+    .content
+    .cloneNode(true);
+    return templateClone;
   }
 
   _setEventListeners() {
@@ -34,7 +43,7 @@ export class Card {
   }
 
   changeInitialCard() {
-    this._templateClone = this._templateCardsContent.cloneNode(true); //скопировать содержимое 
+    this._templateClone = this._getTemplate(); //скопировать содержимое 
     this._templateClone.querySelector('.element__photo').setAttribute('src', this._link); //добавить картинки
     this._templateClone.querySelector('.element__photo').setAttribute('alt', this._name);
     this._templateClone.querySelector('.element__photo-name').textContent = this._name; //добавить подпись к фото

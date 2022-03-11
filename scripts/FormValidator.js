@@ -35,4 +35,11 @@ export class FormValidator {
       button.removeAttribute('disabled')
     }
   }
+
+  disableButton() {
+    const addImageButton = this._form.querySelector(this._settings.submitButtonSelector); 
+    addImageButton.classList.add(this._settings.inactiveButtonClass);
+    addImageButton.setAttribute('disabled', true); 
+  }
+  
 }
