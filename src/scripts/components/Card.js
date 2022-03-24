@@ -1,12 +1,9 @@
-import {openPopUp} from './utils.js';
-import {popUpImage} from './constans.js';
-
 export class Card {
-  constructor(data, cardTemplateSelector) {
+  constructor(data, cardTemplateSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
     this._cardTemplateSelector = cardTemplateSelector;
-    // this._templateCardsContent = document.querySelector(cardTemplateSelector).content;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -28,10 +25,7 @@ export class Card {
   }
 
   _openPopUpImage = () => {
-    openPopUp(popUpImage);
-    popUpImage.querySelector('.popup__card_img').setAttribute('src', this._link);
-    popUpImage.querySelector('.popup__card_img').setAttribute('alt', this._name);
-    popUpImage.querySelector('.popup__card_name').textContent = this._name;
+    this._handleCardClick(this._name, this._link)
   }
 
   _setLikeImage = () => {
@@ -47,7 +41,6 @@ export class Card {
     this._templateClone.querySelector('.element__photo').setAttribute('src', this._link); //добавить картинки
     this._templateClone.querySelector('.element__photo').setAttribute('alt', this._name);
     this._templateClone.querySelector('.element__photo-name').textContent = this._name; //добавить подпись к фото
-
     this._setEventListeners();
     return this._templateClone;
 }
