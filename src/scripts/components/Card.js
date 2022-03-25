@@ -38,10 +38,10 @@ export class Card {
 
   changeInitialCard() {
     this._templateClone = this._getTemplate(); //скопировать содержимое 
-    this._templateClone.querySelector('.element__photo').setAttribute('src', this._link); //добавить картинки
-    this._templateClone.querySelector('.element__photo').setAttribute('alt', this._name);
-    this._templateClone.querySelector('.element__photo-name').textContent = this._name; //добавить подпись к фото
     this._setEventListeners();
+    this._elementPhoto.setAttribute('src', this._link); //добавить картинки
+    this._elementPhoto.setAttribute('alt', this._name);
+    this._templateClone.querySelector('.element__photo-name').textContent = this._name; //добавить подпись к фото
     return this._templateClone;
 }
 
