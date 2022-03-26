@@ -4,17 +4,20 @@ export class FormValidator {
     this._form = form;
     this._formInputs = this._form.querySelectorAll(this._settings.inputSelector);
     this._button = this._form.querySelector(this._settings.submitButtonSelector);
-    this._spans = this._form.querySelectorAll('.input-box__error');
+  }
+
+  _hideInputError(input, span) {
+    input.classList.remove(this._settings.inputErrorClass);
+    span.textContent = '';
   }
 
   _checkInputValidity(input) {
-    const formError = this._form.querySelector(`.${input.id}-error`)
+    const span = this._form.querySelector(`.${input.id}-error`)
     if (!input.validity.valid) {
       input.classList.add(this._settings.inputErrorClass);
-      formError.textContent = input.validationMessage;
+      span.textContent = input.validationMessage;
     } else {
-      input.classList.remove(this._settings.inputErrorClass);
-      formError.textContent = '';
+      this._hideInputError(input, span);
     }
   }
 
@@ -49,10 +52,8 @@ export class FormValidator {
   resetValidation() {
     this._form.reset();
     this._formInputs.forEach((input) => {
-      input.classList.remove('popup__input-text_error');
-    })
-    this._spans.forEach((span) => {
-      span.textContent = '';
+      const span = this._form.querySelector(`.${input.id}-error`)
+      this._hideInputError(input, span);
     })
   }
   

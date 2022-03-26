@@ -42,7 +42,7 @@ const addCard = (data) => {
   const templateClone = createCard(data, popupWithImage.open.bind(popupWithImage))
   cardSection.addItem(templateClone);
   popupFormAddCard.close();
-  formValidators[popUpFormAdd.getAttribute('name')].disableButton();
+  formValidators[popupFormAddCard.getFormName()].disableButton();
 }
 
 const popupFormAddCard = new PopupWithForm('.popup_type_card', addCard)
@@ -72,5 +72,6 @@ editButton.addEventListener('click', openPopUpProfile);
 
 addButton.addEventListener('click', () => {
   formValidators[popupFormAddCard.getFormName()].resetValidation();
+  formValidators[popupFormAddCard.getFormName()].disableButton();
   popupFormAddCard.open()
 });
