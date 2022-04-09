@@ -6,36 +6,46 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Место</title>
-	
+
 </head>
 
 <body class="body">
+
 	<div class="page">
 		<header class="header">
 			<a href="#" class="header__logo"></a>
 		</header>
+
 		<main class="content">
+
 			<section class="profile">
-				<img src="<%=require('./images/photo-profile.png')%>" class="profile__avatar"
-					alt="Пожилой мужчина в красной шапке на фоне моря.">
+				<div class="profile__avatar">
+					<img src="" class="profile__avatar profile__avatar_type_photo">
+					<button class="profile__avatar profile__avatar_type_button">
+					</button>
+				</div>
 				<div class="profile__info">
-					<h1 class="profile__name" name="name">Жак-Ив Кусто</h1>
+					<h1 class="profile__name" name="name"></h1>
 					<button type='button' class="profile__edit-button"></button>
-					<p class="profile__about-me" name="aboutMe">Исследователь океана</p>
+					<p class="profile__about-me" name="aboutMe"></p>
 				</div>
 				<button type='button' class="profile__add-button">
 					<img src="<%=require('./images/addButton.svg')%>" class="profile__ab-image" alt="крестик">
 				</button>
 			</section>
+
 			<section class="elements">
 				<div class="element-list">
 				</div>
 			</section>
+
 		</main>
+
 		<footer class="footer">
 			<p class="footer__copyright">&copy; 2020 Mesto Russia</p>
 		</footer>
 	</div>
+
 	<section class="popup popup_type_profile">
 		<div class="popup__container container">
 			<button type='button' class="popup__close-button popup__close-button_profile">
@@ -44,19 +54,20 @@
 			<h2 class="popup__name">Редактировать профиль</h2>
 			<form name="popupFormProfile" class="popup__input popup__input_profile" novalidate>
 				<div class="input-box">
-					<input id="name" type="text" name="name" class="popup__input-text popup__input-text_new_name"
-						minlength="2" maxlength="40" required placeholder="Имя">
+					<input id="name" type="text" name="name" class="popup__input-text popup__input-text_new_name" minlength="2"
+						maxlength="40" required placeholder="Имя">
 					<span class="name-error input-box__error"></span>
 				</div>
 				<div class="input-box">
-					<input id="info" type="text" name="info" class="popup__input-text popup__input-text_new_info"
-						minlength="2" maxlength="200" required placeholder="О себе">
+					<input id="info" type="text" name="info" class="popup__input-text popup__input-text_new_info" minlength="2"
+						maxlength="200" required placeholder="О себе">
 					<span class="info-error input-box__error"></span>
 				</div>
 				<button type="submit" class="popup__submit-button">Сохранить</button>
 			</form>
 		</div>
 	</section>
+
 	<section class="popup popup_type_card">
 		<div class="popup__container container">
 			<button type='button' class="popup__close-button popup__close-button_card">
@@ -74,10 +85,11 @@
 						class="popup__input-text popup__input-text_new_link" required>
 					<span class="link-error input-box__error"></span>
 				</div>
-				<button type="submit" class="popup__submit-button popup__submit-button_inactive" disabled>Создать</button>
+				<button type="submit" class="popup__submit-button popup__submit-button_inactive" disabled>Сохранить</button>
 			</form>
 		</div>
 	</section>
+
 	<section class="popup popup_type_image">
 		<div class="popup__container-img container">
 			<button type='button' class="popup__close-button popup__close-button_image">
@@ -87,6 +99,36 @@
 			<h2 class="popup__card popup__card_name"></h2>
 		</div>
 	</section>
+
+	<section class="popup popup_type_delete">
+		<div class="popup__container container">
+			<button type='button' class="popup__close-button popup__close-button_card">
+				<img src="<%=require('./images/closeIcon.svg')%>" class="popup__close-image" alt="крестик">
+			</button>
+			<h2 class="popup__name">Вы уверены?</h2>
+			<form name="popupFormCardDelete" class="popup__input popup__input_card" novalidate>
+				<button type="submit" class="popup__submit-button">Да</button>
+			</form>
+		</div>
+	</section>
+
+	<section class="popup popup_type_avatar">
+		<div class="popup__container container">
+			<button type='button' class="popup__close-button popup__close-button_card">
+				<img src="<%=require('./images/closeIcon.svg')%>" class="popup__close-image" alt="крестик">
+			</button>
+			<h2 class="popup__name">Обновить аватар</h2>
+			<form name="popupFormAvatar" class="popup__input popup__input_card" novalidate>
+				<div class="input-box">
+					<input id="link" type="url" name="avatar" placeholder="Ссылка на картинку"
+						class="popup__input-text popup__input-text_new_link" required>
+					<span class="link-error input-box__error"></span>
+				</div>
+				<button type="submit" class="popup__submit-button popup__submit-button_inactive" disabled>Сохранить</button>
+			</form>
+		</div>
+	</section>
+
 	<template class="template">
 		<div class="element">
 			<button type="button" class="element__delete-button">
@@ -96,11 +138,15 @@
 			<img src=" " class="element__photo">
 			<div class="element__line-like">
 				<h2 class="element__photo-name"></h2>
-				<button type='button' class="element__like-button"></button>
+				<div class="element__container-like">
+					<button type='button' class="element__like-button"></button>
+					<span class="element__like-count"></span>
+				</div>
 			</div>
+
 		</div>
 	</template>
-	
+
 </body>
 
 </html>

@@ -1,14 +1,13 @@
-import { initialCards, editButton, addButton, popUpFormAdd, inputNameElement, inputAboutMeElement, settings} from '../scripts/utils/constans.js';
+import { editButton, addButton, inputNameElement, inputAboutMeElement, settings, avatarContainer, buttonEditAvatar, formValidators} from '../scripts/utils/constans.js';
 import { Card } from '../scripts/components/Card.js';
 import { FormValidator } from '../scripts/components/FormValidator.js';
 import Section from '../scripts/components/Section.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import UserInfo from '../scripts/components/UserInfo.js';
+import { api } from '../scripts/components/Api.js'
 
 import './index.css';
-
-const formValidators = {}
 
 const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector))
@@ -24,8 +23,11 @@ enableValidation(settings);
 
 //добавить новую информацию в профиль
 function submitInfo(data) {
-  userInfo.setUserInfo(data)
-  popupFormProfile.close();
+  api.editProfile(data.name, data.info)
+    .then(res => {
+      userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar})
+      popupFormProfile.close();
+    })
 }
 
 //открыть попап с редактированием профиля
@@ -39,31 +41,94 @@ function openPopUpProfile() {
 }
 
 const addCard = (data) => {
-  const templateClone = createCard(data, popupWithImage.open.bind(popupWithImage))
-  cardSection.addItem(templateClone);
-  popupFormAddCard.close();
-  formValidators[popupFormAddCard.getFormName()].disableButton();
+  api.addCard(data.name, data.link)
+    .then(res => {
+      const templateClone = createCard(res, popupWithImage.open.bind(popupWithImage), userId)
+      cardSection.addItem(templateClone);
+      popupFormAddCard.close();
+      formValidators[popupFormAddCard.getFormName()].disableButton();
+    })
 }
 
-const popupFormAddCard = new PopupWithForm('.popup_type_card', addCard)
+function addNewAvatar(data) {
+  api.changeAvatar(data)
+    .then(res => {
+      userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar});
+      popupFormAvatar.close()
+    })
+}
+
+const popupFormAddCard = new PopupWithForm('.popup_type_card', settings.submitButtonSelector, addCard)
 popupFormAddCard.setEventListeners();
 
-const popupFormProfile = new PopupWithForm('.popup_type_profile', submitInfo);
+const popupFormProfile = new PopupWithForm('.popup_type_profile', settings.submitButtonSelector, submitInfo);
 popupFormProfile.setEventListeners();
 
-const userInfo = new UserInfo({name: '.profile__name', info: '.profile__about-me'})
+const popupFormAvatar = new PopupWithForm('.popup_type_avatar', settings.submitButtonSelector, addNewAvatar);
+popupFormAvatar.setEventListeners();
+
+const popupDeleteCard = new PopupWithForm('.popup_type_delete');
+popupDeleteCard.setEventListeners();
+
+const userInfo = new UserInfo({name: '.profile__name', info: '.profile__about-me', avatar: '.profile__avatar_type_photo'});
 
 const popupWithImage = new PopupWithImage('.popup_type_image');
 popupWithImage.setEventListeners();
 
-const cardSection = new Section({items: initialCards, renderer: (item) => {
-  const templateClone = createCard(item, popupWithImage.open.bind(popupWithImage))
-  cardSection.setItem(templateClone);
-}}, '.element-list');
-cardSection.renderItems();
 
-function createCard(item, callback) {
-  const card = new Card(item, '.template', callback);
+let userId
+
+const getUserInfo = api.getUserInfo()
+  .then(res => {
+    userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar})
+    userId = res._id
+  })
+
+const cardSection = new Section('.element-list');
+Promise.all([getUserInfo])
+  .then(() => {
+    api.getInitialCards()
+    .then(cardList => {
+      cardList.forEach(item => {
+        const templateClone = createCard(item, popupWithImage.open.bind(popupWithImage), userId)
+        cardSection.setItem(templateClone);
+      })
+    })
+  })
+
+function createCard(item, callback, userId) {
+  const card = new Card(
+    item,
+    '.template',
+    callback, 
+    (id) => {
+    popupDeleteCard.open()
+    popupDeleteCard.changeSubmit(() => {
+      
+      api.deleteCard(id)
+        .then(res => {
+          
+          card.deleteCard()
+          popupDeleteCard.close()
+        })
+    })
+  }, 
+    userId,
+    (id) => {
+      if (card.isLiked()) {
+        api.deleteLike(id)
+          .then(res => {
+            card.setLikes(res.likes)
+          })
+      } else {
+        api.addLike(id)
+          .then(res => {
+            card.setLikes(res.likes)
+
+          })
+      }
+    }
+  );
   const templateClone = card.changeInitialCard();
   return templateClone
 }
@@ -75,3 +140,17 @@ addButton.addEventListener('click', () => {
   formValidators[popupFormAddCard.getFormName()].disableButton();
   popupFormAddCard.open()
 });
+
+avatarContainer.addEventListener('mouseover', () => {
+  buttonEditAvatar.style.visibility = 'visible'
+})
+
+avatarContainer.addEventListener('mouseout', () => {
+  buttonEditAvatar.style.visibility = 'hidden'
+})
+
+buttonEditAvatar.addEventListener('click', () =>{
+  formValidators[popupFormAvatar.getFormName()].resetValidation();
+  formValidators[popupFormAvatar.getFormName()].disableButton();
+  popupFormAvatar.open()
+})
