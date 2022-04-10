@@ -1,4 +1,4 @@
-export const formValidators = {}
+export const formValidators = {};
 
 export const editButton = document.querySelector('.profile__edit-button');
 

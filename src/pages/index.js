@@ -28,6 +28,8 @@ function submitInfo(data) {
       userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar})
       popupFormProfile.close();
     })
+    .catch(error => console.log(error))
+    .finally(() => popupFormProfile.changeTextButton())
 }
 
 //открыть попап с редактированием профиля
@@ -48,6 +50,8 @@ const addCard = (data) => {
       popupFormAddCard.close();
       formValidators[popupFormAddCard.getFormName()].disableButton();
     })
+    .catch(error => console.log(error))
+    .finally(() => popupFormAddCard.changeTextButton())
 }
 
 function addNewAvatar(data) {
@@ -56,6 +60,8 @@ function addNewAvatar(data) {
       userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar});
       popupFormAvatar.close()
     })
+    .catch(error => console.log(error))
+    .finally(() => popupFormAvatar.changeTextButton())
 }
 
 const popupFormAddCard = new PopupWithForm('.popup_type_card', settings.submitButtonSelector, addCard)
@@ -83,6 +89,7 @@ const getUserInfo = api.getUserInfo()
     userInfo.setUserInfo({name: res.name, info: res.about, avatar: res.avatar})
     userId = res._id
   })
+  .catch(error => console.log(error))
 
 const cardSection = new Section('.element-list');
 Promise.all([getUserInfo])
@@ -94,6 +101,7 @@ Promise.all([getUserInfo])
         cardSection.setItem(templateClone);
       })
     })
+    .catch(error => console.log(error))
   })
 
 function createCard(item, callback, userId) {
@@ -107,10 +115,10 @@ function createCard(item, callback, userId) {
       
       api.deleteCard(id)
         .then(res => {
-          
           card.deleteCard()
           popupDeleteCard.close()
         })
+        .catch(error => console.log(error))
     })
   }, 
     userId,
@@ -120,12 +128,13 @@ function createCard(item, callback, userId) {
           .then(res => {
             card.setLikes(res.likes)
           })
+          .catch(error => console.log(error))
       } else {
         api.addLike(id)
           .then(res => {
             card.setLikes(res.likes)
-
           })
+          .catch(error => console.log(error))
       }
     }
   );
