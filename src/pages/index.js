@@ -8,6 +8,7 @@ import UserInfo from '../scripts/components/UserInfo.js';
 import { api } from '../scripts/components/Api.js'
 
 import './index.css';
+import PopupWithoutForm from '../scripts/components/PopupWithoutForm.js';
 
 const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector))
@@ -73,7 +74,7 @@ popupFormProfile.setEventListeners();
 const popupFormAvatar = new PopupWithForm('.popup_type_avatar', settings.submitButtonSelector, addNewAvatar);
 popupFormAvatar.setEventListeners();
 
-const popupDeleteCard = new PopupWithForm('.popup_type_delete');
+const popupDeleteCard = new PopupWithoutForm('.popup_type_delete');
 popupDeleteCard.setEventListeners();
 
 const userInfo = new UserInfo({name: '.profile__name', info: '.profile__about-me', avatar: '.profile__avatar_type_photo'});
